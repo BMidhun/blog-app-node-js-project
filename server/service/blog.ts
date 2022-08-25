@@ -12,7 +12,7 @@ import { UserCollection } from "../models/interfaces/user";
 const { BLOG_COLLECTION, USER_COLLECTION } = config;
 
 class BlogService {
-  static async fetchAllBlogs(): Promise<BlogDocument[]> {
+  static async fetchAllBlogs(userId: string): Promise<BlogDocument[]> {
     try {
       const blogCollection = await getCollection<BlogCollection>(
         BLOG_COLLECTION
@@ -20,7 +20,7 @@ class BlogService {
 
       if (!blogCollection) throw new Error("Collection not found");
 
-      const filterQuery = { "author.id": { $ne: new ObjectId() } };
+      const filterQuery = { "author.id": { $ne: new ObjectId(userId) } };
 
       const cursor = blogCollection.find(filterQuery, {
         sort: { createdAt: -1 },

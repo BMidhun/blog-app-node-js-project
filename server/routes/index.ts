@@ -14,6 +14,7 @@ import {
   logOutController,
   registerController,
 } from "../controllers/user";
+import { AuthMiddleWare } from "../middlewares/auth";
 
 const router = Router({ caseSensitive: true });
 
@@ -27,21 +28,21 @@ router.get("/healthcheck", (req, res) => {
 
 //BLOG ROUTES
 
-router.get(`${BASE_URL}/blogs`, fetchBlogs);
-router.get(`${BASE_URL}/my-blogs`, fetchMyBlogs);
-router.get(`${BASE_URL}/blogs/:id`, fetchBlogById);
-router.get(`${BASE_URL}/my-blogs/:id`, fetchMyBlogById);
+router.get(`${BASE_URL}/blogs`, AuthMiddleWare, fetchBlogs);
+router.get(`${BASE_URL}/my-blogs`, AuthMiddleWare, fetchMyBlogs);
+router.get(`${BASE_URL}/blogs/:id`, AuthMiddleWare, fetchBlogById);
+router.get(`${BASE_URL}/my-blogs/:id`, AuthMiddleWare, fetchMyBlogById);
 
-router.post(`${BASE_URL}/create-blog`, createBlog);
+router.post(`${BASE_URL}/create-blog`, AuthMiddleWare, createBlog);
 
-router.put(`${BASE_URL}/edit-blog/:id`, editBlogById);
+router.put(`${BASE_URL}/edit-blog/:id`, AuthMiddleWare, editBlogById);
 
-router.delete(`${BASE_URL}/delete-blog/:id`, deleteBlogById);
+router.delete(`${BASE_URL}/delete-blog/:id`, AuthMiddleWare, deleteBlogById);
 
 //USER ROUTES
 
 router.post(`${BASE_URL}/login`, loginController);
 router.post(`${BASE_URL}/register`, registerController);
-router.post(`${BASE_URL}/logout`, logOutController);
+router.post(`${BASE_URL}/logout`, AuthMiddleWare, logOutController);
 
 export { router };

@@ -7,7 +7,8 @@ export const fetchBlogs = async (
   next: NextFunction
 ) => {
   try {
-    const blogs = await BlogService.fetchAllBlogs();
+    const user = req.app.locals.user;
+    const blogs = await BlogService.fetchAllBlogs(user.userId);
     return res.status(200).json({ success: true, blogs });
   } catch (error) {
     res.statusCode = 500;
@@ -21,8 +22,8 @@ export const fetchMyBlogs = async (
   next: NextFunction
 ) => {
   try {
-    const userId = "";
-    const blogs = await BlogService.fetchAMyBlogs(userId);
+    const user = req.app.locals.user;
+    const blogs = await BlogService.fetchAMyBlogs(user.userId);
     return res.status(200).json({ success: true, blogs });
   } catch (error) {
     res.statusCode = 500;
